@@ -1,6 +1,9 @@
 .ipynb_checkpoints
 Clase7Jul.py
 links_cache.txt
+cache/
+data/
+reportes/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

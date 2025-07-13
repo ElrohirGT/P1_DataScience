@@ -22,8 +22,13 @@ En esta sección se presenta un análisis exploratorio del conjunto de datos uni
 - **Total de filas (registros)**: 6599
 - **Total de variables (columnas)**: 17
 - **Filas completamente duplicadas**: 0
-- **Valores nulos**: No se detectan valores nulos en ninguna de las columnas. Todos los registros tienen datos presentes en las variables disponibles.
-- **Tipo de datos**: Todas las columnas son de tipo `object` (texto).
+- **Valores nulos por columna**:
+
+  - `direccion`: 2 valores nulos
+  - `telefono`: 46 valores nulos
+  - `director`: 26 valores nulos
+  - Resto de columnas: 0 valores nulos
+- **Tipo de datos por columna**: Todas las columnas son de tipo `object` (texto), incluso aquellas que podrían representar datos categóricos o numéricos.
 
 #### Variables del Conjunto de Datos
 
@@ -54,6 +59,11 @@ A continuación se listan las variables que componen el dataset, junto con una b
 > pendiente...
 
 ### [ ] Estrategia Propuesta para la Limpieza
+
+Antes de aplicar las transformaciones específicas por variable, **se realizó un análisis exploratorio general de valores nulos**, identificando columnas con valores vacíos reales o simulados (como cadenas vacías `" "` o espacios `"  "`).
+Como primer paso de limpieza, **se reemplazaron todos estos casos por valores nulos reales (`np.nan`)**, con el objetivo de facilitar su posterior tratamiento, análisis de calidad y filtrado.
+
+A continuación, se detalla la estrategia específica aplicada por variable:
 
 | Variable(s)                                                | Problema Detectado                                                                                           | Operación de Limpieza Propuesta                                                                                                                                                                 | Justificación                                                                                                 |
 | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |

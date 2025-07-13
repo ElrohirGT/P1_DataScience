@@ -54,11 +54,7 @@ A continuación se listan las variables que componen el dataset, junto con una b
 | `plan`            | Tipo de plan de estudios ofrecido (ej. DIARIO(REGULAR)).                                                                  |
 | `departamental`   | Nombre del departamento, redundante con la columna `departamento` pero útil para verificar integridad.                    |
 
-### [ ] Análisis Exploratorio Inicial
-
-> pendiente...
-
-### [ ] Estrategia Propuesta para la Limpieza
+### ✅ Estrategia Propuesta para la Limpieza
 
 Antes de aplicar las transformaciones específicas por variable, **se realizó un análisis exploratorio general de valores nulos**, identificando columnas con valores vacíos reales o simulados (como cadenas vacías `" "` o espacios `"  "`).
 Como primer paso de limpieza, **se reemplazaron todos estos casos por valores nulos reales (`np.nan`)**, con el objetivo de facilitar su posterior tratamiento, análisis de calidad y filtrado.
@@ -77,6 +73,33 @@ A continuación, se detalla la estrategia específica aplicada por variable:
 | General (todas las columnas)                               | Presencia de `" "` o cadenas vacías que aparentan ser datos válidos                                          | - Reemplazar por valores `NaN` o nulos reales (`np.nan`)                                                                                                                                        | Mejora la detección de valores faltantes y permite análisis precisos de calidad de datos.                     |
 | Todo el dataset                                            | Todos los campos son tipo `object` (texto), incluso numéricos o categóricos                                  | - Mantener `telefono` como texto limpio.<br>- Evaluar tipado adecuado para análisis posterior: convertir valores categóricos (`status`, `sector`, etc.) y códigos numéricos donde aplique       | Permite eficiencia en análisis estadístico, creación de visualizaciones, y compatibilidad con otros sistemas. |
 
+### [ ] Implementación de operaciones de limpieza
+
+La limpieza de la columna `establecimiento` se realizó en dos etapas complementarias:
+
+**1. Limpieza básica y normalización textual:**
+
+Se aplicaron transformaciones orientadas a garantizar consistencia y eliminar caracteres no deseados:
+
+- Eliminación de comillas simples y dobles (`"` y `'`).
+- Sustitución de múltiples espacios por uno solo.
+- Eliminación de comas al final de cadenas.
+- Conversión de todo el texto a **mayúsculas**.
+- Normalización de caracteres Unicode: se eliminaron tildes y signos diacríticos (ej. `É` → `E`, `Ñ` → `N`).
+
+Esto garantiza que cadenas visualmente iguales sean comparables computacionalmente, evitando errores por diferencias ortográficas o de codificación.
+
+**2. Clasificación tipológica (`tipo_establecimiento`):**
+
+A partir de la columna normalizada, se creó una nueva variable `tipo_establecimiento` mediante una función que identifica patrones y aplica reglas específicas:
+
+- Corrección de errores comunes en palabras clave iniciales (ej. `COLEGO` → `COLEGIO`).
+- Asignación condicional según coincidencias con substrings clave (`COLEGIO`, `INSTITUTO`, `SCHOOL`, `COLLEGE`, etc.).
+- Inclusión de **excepciones** y **casos especiales** con cadenas exactas para evitar falsos positivos.
+- Creación de una categoría especial `"CORPORACION"` si la cadena inicia con `"CORPORACION"`.
+
+Además, para una clasificación más precisa, se realizó un análisis manual complementado con la ayuda de una inteligencia artificial (ChatGPT) para explorar nombres de entidades, identificar patrones contextuales, y decidir correctamente el tipo real del establecimiento. Este proceso se documentó y desarrolló en este [enlace](https://chatgpt.com/share/68733621-edec-800f-9b14-466a8b1c020d).
+
 ## Resumen de Estado
 
 | Etapa                                                         | Estado   |
@@ -90,6 +113,5 @@ A continuación, se detalla la estrategia específica aplicada por variable:
 | Descripción general de cada variable                          | ✅       |
 | Definición de estrategia de limpieza                          | ✅       |
 | Implementación de operaciones de limpieza                     | [ ]      |
-| Revisión de duplicados e inconsistencias en campos clave      | [ ]      |
 | Generación del conjunto limpio                                | [ ]      |
 | Documentación de variables y metadatos                        | [ ]      |

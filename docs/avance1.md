@@ -18,6 +18,16 @@ geometry: top=0.67in, bottom=0.67in, left=0.85in, right=0.85in
 
 # Avance del Proyecto: Limpieza de Datos de Establecimientos Educativos de Nivel Diversificado en Guatemala
 
+## Integrantes
+
+- Flavio Galán
+- Josue Say
+- Isabella Miralles
+
+## Repositorio
+
+- [Enlace a GitHub](https://github.com/ElrohirGT/P1_DataScience)
+
 ## Entregable: Análisis del Estado Inicial del Conjunto de Datos
 
 Este avance tiene como objetivo entregar una descripción detallada del conjunto de datos crudos descargado, identificar variables que requerirán mayor atención durante la limpieza, y definir una estrategia de limpieza sin implementarla aún.

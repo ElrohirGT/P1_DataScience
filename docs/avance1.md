@@ -1,3 +1,21 @@
+<!-- ---
+header-includes:
+  - \usepackage{amsmath}
+  - \usepackage{amssymb}
+  - \usepackage{fontspec}
+  - \setmainfont{FiraCode Nerd Font}
+  - \setmonofont{FiraCode Nerd Font Mono}
+  - \usepackage{setspace}
+  - \setstretch{1.5}
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+  - \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
+  - \usepackage{geometry}
+  - \usepackage{etoolbox}
+  - \AtBeginEnvironment{longtable}{\scriptsize}
+geometry: top=0.67in, bottom=0.67in, left=0.85in, right=0.85in
+--- -->
+
 # Avance del Proyecto: Limpieza de Datos de Establecimientos Educativos de Nivel Diversificado en Guatemala
 
 ## Entregable: Análisis del Estado Inicial del Conjunto de Datos
@@ -6,14 +24,14 @@ Este avance tiene como objetivo entregar una descripción detallada del conjunto
 
 ## Componentes del Avance
 
-### ✅ Descarga y Unificación de los Datos
+### Descarga y Unificación de los Datos
 
 - Se desarrolló un script en Python utilizando Selenium para automatizar la descarga de datos desde el sitio del Ministerio de Educación.
 - Se implementó un sistema de cacheo basado en el archivo `links_cache.txt` para evitar descargas repetidas.
 - Los datos fueron almacenados en archivos `.txt` en formato Python.
 - Se unificaron todos los datos en un único archivo `.csv` (`data_unified.csv`).
 
-### ✅ Estructura del Conjunto de Datos Crudo
+### Estructura del Conjunto de Datos Crudo
 
 En esta sección se presenta un análisis exploratorio del conjunto de datos unificado que contiene información de establecimientos educativos a nivel diversificado en Guatemala. El objetivo es comprender su composición inicial, identificar posibles irregularidades estructurales y sentar las bases para las futuras operaciones de limpieza.
 
@@ -23,7 +41,6 @@ En esta sección se presenta un análisis exploratorio del conjunto de datos uni
 - **Total de variables (columnas)**: 17
 - **Filas completamente duplicadas**: 0
 - **Valores nulos por columna**:
-
   - `direccion`: 2 valores nulos
   - `telefono`: 46 valores nulos
   - `director`: 26 valores nulos
@@ -54,7 +71,7 @@ A continuación se listan las variables que componen el dataset, junto con una b
 | `plan`            | Tipo de plan de estudios ofrecido (ej. DIARIO(REGULAR)).                                                                  |
 | `departamental`   | Nombre del departamento, redundante con la columna `departamento` pero útil para verificar integridad.                    |
 
-### ✅ Estrategia Propuesta para la Limpieza
+### Estrategia Propuesta para la Limpieza
 
 Antes de aplicar las transformaciones específicas por variable, **se realizó un análisis exploratorio general de valores nulos**, identificando columnas con valores vacíos reales o simulados (como cadenas vacías `" "` o espacios `"  "`).
 Como primer paso de limpieza, **se reemplazaron todos estos casos por valores nulos reales (`np.nan`)**, con el objetivo de facilitar su posterior tratamiento, análisis de calidad y filtrado.
@@ -73,7 +90,7 @@ A continuación, se detalla la estrategia específica aplicada por variable:
 | General (todas las columnas)                               | Presencia de `" "` o cadenas vacías que aparentan ser datos válidos                                          | - Reemplazar por valores `NaN` o nulos reales (`np.nan`)                                                                                                                                        | Mejora la detección de valores faltantes y permite análisis precisos de calidad de datos.                     |
 | Todo el dataset                                            | Todos los campos son tipo `object` (texto), incluso numéricos o categóricos                                  | - Mantener `telefono` como texto limpio.<br>- Evaluar tipado adecuado para análisis posterior: convertir valores categóricos (`status`, `sector`, etc.) y códigos numéricos donde aplique       | Permite eficiencia en análisis estadístico, creación de visualizaciones, y compatibilidad con otros sistemas. |
 
-### [ ] Implementación de operaciones de limpieza
+### Implementación de operaciones de limpieza
 
 #### Establecimiento
 
@@ -117,18 +134,55 @@ Los códigos `XX` y `YY` se utilizaron en combinación con los nombres limpios d
 
 Adicionalmente, se extrajo el segundo segmento del campo `distrito` (`YY`) y se renombró como `codigo_distrito`, ya que representa un identificador municipal útil y el campo original fue descartado. Finalmente, se eliminaron las columnas `codigo`, `departamento`, `municipio` y `distrito`, por ser reemplazadas o integradas en nuevas variables con mayor estructura y control de calidad.
 
-## Resumen de Estado
+Aquí tienes la sección **completa y redactada** para el título **"Implementación de operaciones de limpieza"**, basada fielmente en el código proporcionado:
 
-| Etapa                                                         | Estado   |
-|---------------------------------------------------------------|----------|
-| Descarga de los datos                                         | ✅       |
-| Unificación y exportación a CSV                               | ✅       |
-| Conteo de filas y columnas del set unificado                  | ✅       |
-| Conteo de filas y columnas del set unificado                  | ✅       |
-| Conteo de duplicados y valores nulos por columna              | ✅       |
-| Identificación del tipo de datos por variable                 | ✅       |
-| Descripción general de cada variable                          | ✅       |
-| Definición de estrategia de limpieza                          | ✅       |
-| Implementación de operaciones de limpieza                     | [ ]      |
-| Generación del conjunto limpio                                | [ ]      |
-| Documentación de variables y metadatos                        | [ ]      |
+#### Limpieza de nombres de personas (`supervisor`, `director`)
+
+Se aplicó una limpieza orientada a estandarizar nombres propios:
+
+- Eliminación de espacios sobrantes.
+- Capitalización con estilo título (`.title()`).
+- Eliminación de tildes y signos diacríticos mediante normalización Unicode (`NFKD`).
+
+Esto asegura la consistencia visual y semántica de nombres, clave para posteriores cruces con bases institucionales.
+
+#### Estandarización de variables categóricas (`modalidad`, `jornada`, `plan`, `status`, `sector`, `area`)
+
+Se homogenizaron los valores de estas variables:
+
+- Conversión a **mayúsculas**.
+- Eliminación de espacios innecesarios.
+- Conversión final del tipo de datos a `category` en las columnas `status`, `sector` y `area`, optimizando espacio y análisis.
+
+#### Tratamiento de valores vacíos en todo el dataset
+
+Se reemplazaron todas las cadenas vacías (`""`) por valores nulos reales (`np.nan`), permitiendo un análisis confiable de valores faltantes.
+
+#### Corrección del campo `direccion`
+
+Se normalizó el texto en esta columna para facilitar su análisis y posibles procesos de georreferenciación:
+
+- Conversión a **minúsculas**.
+- Eliminación de espacios sobrantes.
+- Reemplazo de abreviaciones comunes: `km` → `kilómetro`, `zona` → `zona` (mantenido para uniformidad).
+
+#### Validación del campo `telefono`
+
+Para asegurar que los números telefónicos sean válidos:
+
+- Eliminación de cualquier carácter no numérico.
+- Verificación de longitud: solo se conservaron números de **8 dígitos**, el formato oficial en Guatemala. Los valores inválidos se marcaron como `NaN`.
+
+#### Verificación y eliminación de redundancia (`departamento` vs. `departamental`)
+
+Se compararon ambas columnas para detectar duplicidad:
+
+- Si sus valores coincidían exactamente, se eliminó `departamental` por ser redundante.
+
+#### Conversión de la columna `codigo` a formato numérico
+
+Se intentó convertir `codigo` a tipo numérico (`int64`). En caso de error, se asignó `NaN`. Esto prepara el campo para su posterior descomposición estructural.
+
+#### Guardado del conjunto limpio
+
+Finalmente, el dataset transformado se guardó como archivo CSV con el nombre `data/df_limpio.csv`.

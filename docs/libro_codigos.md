@@ -1,3 +1,21 @@
+---
+header-includes:
+  - \usepackage{amsmath}
+  - \usepackage{amssymb}
+  - \usepackage{fontspec}
+  - \setmainfont{FiraCode Nerd Font}
+  - \setmonofont{FiraCode Nerd Font Mono}
+  - \usepackage{setspace}
+  - \setstretch{1.5}
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+  - \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
+  - \usepackage{geometry}
+  - \usepackage{etoolbox}
+  - \AtBeginEnvironment{longtable}{\scriptsize}
+geometry: top=0.67in, bottom=0.67in, left=0.85in, right=0.85in
+---
+
 # Libro de Códigos
 
 Este libro de codigos contiene información del dataset `data_clean.csv` que contiene:
@@ -6,6 +24,11 @@ Este libro de codigos contiene información del dataset `data_clean.csv` que con
 - Total de columnas: 21
 
 Este libro también contiene descripciones, tipos de datos y valores válidos. Se generó como parte del proceso de limpieza, análisis y validación de datos sobre establecimientos educativos en Guatemala.
+
+## Enlaces
+
+- [Enlace a GitHub](https://github.com/ElrohirGT/P1_DataScience)
+- No se trabajó google docs sino md en el repositorio en la carpeta [docs/libro_codigos](https://github.com/ElrohirGT/P1_DataScience/blob/main/docs/libro_codigos.md)
 
 ## Variables del Dataset
 

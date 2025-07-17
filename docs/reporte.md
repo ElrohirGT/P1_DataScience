@@ -1,3 +1,21 @@
+---
+header-includes:
+  - \usepackage{amsmath}
+  - \usepackage{amssymb}
+  - \usepackage{fontspec}
+  - \setmainfont{FiraCode Nerd Font}
+  - \setmonofont{FiraCode Nerd Font Mono}
+  - \usepackage{setspace}
+  - \setstretch{1.5}
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+  - \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
+  - \usepackage{geometry}
+  - \usepackage{etoolbox}
+  - \AtBeginEnvironment{longtable}{\scriptsize}
+geometry: top=0.67in, bottom=0.67in, left=0.85in, right=0.85in
+---
+
 # Limpieza de Datos de Establecimientos Educativos en Guatemala
 
 ## Integrantes
@@ -9,6 +27,7 @@
 ## Repositorio
 
 - [Enlace a GitHub](https://github.com/ElrohirGT/P1_DataScience)
+- No se trabajó google docs sino md en el repositorio en la carpeta [docs/reporte](https://github.com/ElrohirGT/P1_DataScience/blob/main/docs/reporte.md)
 
 ## Proceso de Obtención de Datos
 
